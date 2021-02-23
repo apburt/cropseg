@@ -1,0 +1,13 @@
+name: cropseg
+channels:
+  - conda-forge
+dependencies:
+  - python=3.8
+  - gdal
+  - numpy=1.18
+  - scipy
+  - matplotlib=2.2
+  - pip
+  - pip:
+    - Pillow
+    - radiant-mlhub

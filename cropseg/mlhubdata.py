@@ -25,7 +25,7 @@ def loadjson(jsonfile):
         data = json.load(fp)
     return data
 
-def getItemFromCollection(item,collection,datasetinfo):
+def getItemsFromCollection(item,collection,datasetinfo):
     metadata = loadjson(f'{datasetinfo["metadatadir"]}{collection}.json')
     labelmetadata = []
     for i in range(len(metadata)):

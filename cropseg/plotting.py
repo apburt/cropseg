@@ -2,14 +2,11 @@
 
 #Andrew Burt - a.burt@ucl.ac.uk
 
-import datetime
+import numpy
 
-def datepositions(dates,yearstart=False):
-    positions = []
-    if yearstart == False:
-        startdate = min(dates)
-    else:
-        startdate = datetime.date(min(dates).year,1,1)
-    for i in range(len(dates)):
-        positions.append((dates[i]-startdate).days+1)
-    return positions
+def rgbcomposite(image,bands):
+    red = next(item for item in bands if item["band"] == "red")["idx"]    
+    green = next(item for item in bands if item["band"] == "green")["idx"]    
+    blue = next(item for item in bands if item["band"] == "blue")["idx"]    
+    rgb = numpy.dstack((image[red],image[green],image[blue]))    
+    return rgb

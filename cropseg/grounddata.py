@@ -6,23 +6,19 @@ import numpy
 from osgeo import gdal
 import scipy.ndimage
 
-from mlhubdata import loadjson
-
-def groundCropCountByTile(datasetinfo):
-    groundlabels = loadjson(f'{datasetinfo["metadatadir"]}{datasetinfo["groundcollection"]}_id.json')
-    groundmetadata = loadjson(f'{datasetinfo["metadatadir"]}{datasetinfo["groundcollection"]}.json')
-    cropcount = numpy.zeros([len(groundmetadata),len(groundlabels)+1],dtype='int')
-    for i in range(len(groundmetadata)):        
-        tile = gdal.Open(f'{datasetinfo["datadir"]}{datasetinfo["groundcollection"]}/{groundmetadata[i]["id"]}/labels.{datasetinfo["extension"]}')
-        tiledata = numpy.array(tile.GetRasterBand(1).ReadAsArray(),dtype="int")
+def tilecropcount(datasetinfo,groundlabels,groundmetadata):
+    cropcount = numpy.zeros([len(groundmetadata),len(groundlabels)+1],dtype=numpy.int32)
+    for i in range(len(groundmetadata)):
+        tilehandle = gdal.Open(f'{datasetinfo["datadir"]}{datasetinfo["groundcollection"]}/{groundmetadata[i]["id"]}/{datasetinfo["groundname"]}')
+        tiledata = numpy.array(tilehandle.GetRasterBand(1).ReadAsArray(),dtype=numpy.int32)
         cropcount[i][len(groundlabels)] = int(groundmetadata[i]["id"].split("_")[len(groundmetadata[i]["id"].split("_"))-1])
         for j in range(len(groundlabels)):
             cropcount[i][j] = numpy.count_nonzero(tiledata == j)
     return cropcount
 
-def getFieldMasks(tiledata,erosioniterations=0):
+def erodedfieldmasks(tiledata,erosioniterations=0):
     crops = numpy.unique(tiledata[tiledata != 0])
-    fieldmasks = [[]] * len(crops)
+    fieldmasks = [[] for _ in range(len(crops))]
     cstructure = [[1,1,1],
                   [1,1,1],
                   [1,1,1]]

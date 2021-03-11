@@ -10,3 +10,12 @@ def rgbcomposite(image,bands):
     blue = next(item for item in bands if item["band"] == "blue")["idx"]    
     rgb = numpy.dstack((image[red],image[green],image[blue]))    
     return rgb
+
+def fieldmask_colrowcount(fieldmasks):
+    ncol = nrow = 0
+    for i in range(len(fieldmasks)):
+        if fieldmasks[i][1] > 0:
+            ncol = ncol + 1
+        if fieldmasks[i][1] > nrow:
+            nrow = fieldmasks[i][1]
+    return ncol,nrow

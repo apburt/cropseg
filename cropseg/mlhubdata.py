@@ -45,5 +45,5 @@ def get_tileitems_from_collection(tileid,metadata,datasetinfo,verbose=0):
     for i in range(len(items)):
         dates.append(datetime.datetime.strptime(items[i]["properties"]["datetime"],"%Y-%m-%dT%H:%M:%S+0000").date())  
     if verbose > 0:
-        print(f'Items for {metadata[i]["id"]} are available                                                          ')
+        print(f'Items for {tileid} are available                                                                                                    ')
     return items,dates

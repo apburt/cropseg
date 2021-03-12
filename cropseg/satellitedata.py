@@ -32,7 +32,7 @@ def _geteoindex(data,bands,index):
         nir = next(item for item in bands if item["band"] == "nir")["idx"]
         return (data[nir] - data[swir1]) / (data[nir] + data[swir1])
 
-def load_satellite_data_as_array(items,bands,indices,datasetinfo,shape,rr=1):
+def load_satellite_data_as_array(items,bands,indices,datasetinfo,shape,rr=1.0):
     data = numpy.zeros([len(items),len(bands)+len(indices),shape[0],shape[1]],dtype=numpy.float32)
     for i in range(len(items)):
         imagehandle = gdal.Open(f'{datasetinfo["datadir"]}{items[i]["collection"]}/{items[i]["id"]}/source.tif')

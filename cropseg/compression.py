@@ -14,13 +14,13 @@ def _dbllogifunc_initialguess(x,y,x01=0.2,k1=10.0,x02=0.8,k2=-15.0):
 def dbllogifunc(x,A1,A2,x01,k1,x02,k2):
     return A1+A2*(1./(1+numpy.exp(-k1*(x-x01)))-1./(1+numpy.exp(k2*(x-x02))))
 
-def doublelogistic(x,y,bound=True,epsilon=0.1):
+def doublelogistic(x,y,weights=None,bound=True,epsilon=0.1):    
     A1,A2,x01,k1,x02,k2 = _dbllogifunc_initialguess(x,y)
     if bound == False:
-        popt,pcov = scipy.optimize.curve_fit(dbllogifunc,x,y,p0=[A1,A2,x01,k1,x02,k2],method='lm',maxfev=1000000)
+        popt,pcov = scipy.optimize.curve_fit(dbllogifunc,x,y,p0=[A1,A2,x01,k1,x02,k2],sigma=weights,method='lm',maxfev=1000000)
         return popt
     if bound == True:
-        popt,pcov = scipy.optimize.curve_fit(dbllogifunc,x,y,p0=[A1,A2,x01,k1,x02,k2],method='trf',maxfev=1000000,bounds=((A1-epsilon,A2-epsilon,0,0,0,-numpy.inf),(A1+epsilon,A2+epsilon,1,numpy.inf,1,0)))
+        popt,pcov = scipy.optimize.curve_fit(dbllogifunc,x,y,p0=[A1,A2,x01,k1,x02,k2],sigma=weights,method='trf',maxfev=1000000,bounds=((A1-epsilon,A2-epsilon,0,0,0,-numpy.inf),(A1+epsilon,A2+epsilon,1,numpy.inf,1,0)))
         return popt
 
 def doublelogistic_fittingconditions(x,y,durationmin=0.9,gapmax=0.3,amplitudemin=0.25):

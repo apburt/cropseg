@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 
-#Andrew Burt - a.burt@ucl.ac.uk
-
 import os
 import json
 import urllib

@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 
-#Andrew Burt - a.burt@ucl.ac.uk
-
 import numpy
 
 def fusedataandweight(x1,y1,x2,y2,weight=[0.1,1]):
